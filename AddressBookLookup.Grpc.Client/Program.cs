@@ -12,25 +12,25 @@ class Program
 
         var response = await client.GetAddressBookAsync(new Empty());
 
-        Console.WriteLine("GetAddressBook:");
+        Console.WriteLine(" - GetAddressBook:");
         foreach (var person in response.People)
         {
-            Console.WriteLine($"- {person.Name} ({person.Email}) {person.Address}");
+            Console.WriteLine($"   {person.Name} ({person.Email}) {person.Address}");
         }
 
-        Console.WriteLine("FindPerson:");
+        Console.WriteLine(" - FindPerson:");
 
         var request = new FindPersonRequest
         {
-            Person = new Person { Name = "Name1 Test1" },
-            FieldMask = new FieldMask { Paths = { "name" } }
+            Person = new Person { Address = "Calle Falsa, 456" },
+            FieldMask = new FieldMask { Paths = { nameof(Person.Address) } }
         };
 
         using var call = client.FindPerson(request);
 
         await foreach (var person in call.ResponseStream.ReadAllAsync())
         {
-            Console.WriteLine($"- {person.Name} ({person.Email}) {person.Address}");
+            Console.WriteLine($"   {person.Name} ({person.Email}) {person.Address}");
         }
         Console.ReadLine();
     }
