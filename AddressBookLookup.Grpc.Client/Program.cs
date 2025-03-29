@@ -22,8 +22,8 @@ class Program
 
         var request = new FindPersonRequest
         {
-            Person = new Person { Address = "Calle Falsa, 456" },
-            FieldMask = new FieldMask { Paths = { nameof(Person.Address) } }
+            Person = new Person { Address = "Fake Street, 456" },
+            FieldMask = new FieldMask { Paths = { nameof(Person.Address).ToLower() } }
         };
 
         using var call = client.FindPerson(request);

@@ -29,7 +29,10 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await dbContext.Database.EnsureCreatedAsync();  // This way we are sure that the database is created on every execution and it has data
+    
+    // Drop and recreate the database to ensure fresh data
+    await dbContext.Database.EnsureDeletedAsync();
+    await dbContext.Database.EnsureCreatedAsync();
 }
 
 // Configure the HTTP request pipeline.

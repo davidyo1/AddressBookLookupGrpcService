@@ -5,8 +5,19 @@ import "google/protobuf/field_mask.proto";
 
 option csharp_namespace = "AddressBookLookup.Grpc.Common";
 
+// AddressBookLookupService provides methods to manage an address book.
 service AddressBookLookupService {
+  // GetAddressBook retrieves the entire address book in a single response.
+  // This is a unary RPC, suitable for small to medium-sized address books.
   rpc GetAddressBook (google.protobuf.Empty) returns (AddressBook);
+
+  // FindPerson searches for people matching the given criteria and streams the results.
+  // This is a server-side streaming RPC that:
+  // 1. Processes results asynchronously, allowing the client to start processing matches
+  //    while the server is still searching
+  // 2. Reduces memory pressure on both client and server by streaming results
+  // 3. Provides real-time feedback as matches are found
+  // The field_mask parameter allows for flexible matching on specific fields only.
   rpc FindPerson (FindPersonRequest) returns (stream Person);
 }
 
